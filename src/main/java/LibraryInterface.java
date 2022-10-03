@@ -18,6 +18,9 @@ public interface LibraryInterface {
     void sortByName(ArrayList<String> allBooks);
 
     void sortByLength(ArrayList<String> allBooks);
-    void sortByGenre();
+
+    void sortByDate(ArrayList<String> allBooks);
+    void sortByType(ArrayList<String> allBooks);
+    void sortByGenre(ArrayList<String> allBooks);
 
 }
