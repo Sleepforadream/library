@@ -32,6 +32,10 @@ public class GeneralService implements GeneralInterface {
     public ArrayList<Press> getListAllPress() {
         ArrayList<Press> presses = new ArrayList<>();
         File[] allFiles = libraryDirectory.listFiles();
+        if (allFiles == null) {
+            errorMessages.printNotFoundBooksOrMagazineMessage();
+            System.exit(1);
+        }
         for (int i = 0; i < Objects.requireNonNull(allFiles).length; i++) {
             String name = getTitleByFileName(allFiles[i].getAbsolutePath());
             String author = getAuthorByFileName(allFiles[i].toString());
@@ -97,11 +101,11 @@ public class GeneralService implements GeneralInterface {
         String answer = sc.nextLine();
         ArrayList<Press> findBooks = new ArrayList<>();
         for (Press press : allPress) {
-            if (generalTools.findInList(press,answer)) {
+            if (generalTools.findInList(press, answer)) {
                 findBooks.add(press);
             }
         }
-        if(!findBooks.isEmpty()){
+        if (!findBooks.isEmpty()) {
             generalTools.printListWithNumbers(findBooks);
             return findBooks;
         } else {
@@ -125,6 +129,7 @@ public class GeneralService implements GeneralInterface {
     }
 
     public void openFileByNumberInList(ArrayList<Press> allBooks) {
+        instructionsMessages.printChoosePressWantOpenMessage();
         if (sc.hasNextInt()) {
             int number = sc.nextInt();
             Press name = allBooks.get(number - 1);

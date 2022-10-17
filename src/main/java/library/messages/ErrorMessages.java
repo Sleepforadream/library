@@ -131,4 +131,12 @@ public class ErrorMessages {
     public void printGenreTypeDataMessage() {
         System.err.println("Значением поля sortBy должны быть - 'жанр', 'тип' или 'дата'");
     }
+
+    public String getNotFoundBooksOrMagazineMessage() {
+        return "Не удалось найти книги или журналы библиотеки";
+    }
+
+    public void printNotFoundBooksOrMagazineMessage() {
+        System.err.println("Не удалось найти книги или журналы библиотеки. Проверьте наличие файлов в папке для хранения прессы");
+    }
 }

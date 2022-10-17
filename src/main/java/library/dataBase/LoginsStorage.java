@@ -14,17 +14,4 @@ public class LoginsStorage extends UserDirectory {
     public static File loginsFile = new File(pathLoginsFile);
     public static File loginsDirectory = new File(pathLoginsDirectory);
 
-    public void createFolder() {
-        try {
-            if (!loginsDirectory.exists()) {
-                Files.createDirectories(Paths.get(pathLoginsDirectory));
-            }
-            if (!loginsFile.exists()) {
-                Files.createFile(Paths.get(pathLoginsFile));
-            }
-        } catch (IOException folderException) {
-            ErrorMessages exceptionsMessages = new ErrorMessages();
-            exceptionsMessages.printNotCreateFolderExceptionMessage();
-        }
-    }
 }

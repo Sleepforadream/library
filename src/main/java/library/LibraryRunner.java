@@ -17,16 +17,11 @@ import static library.dataBase.LibraryStorage.libraryDirectory;
 
 public class LibraryRunner {
     public static void main(String[] args) {
-
+        GeneralTools generalTools = new GeneralTools();
+        generalTools.createFolder();
         InstructionsMessages instructionsText = new InstructionsMessages();
-        LoginsStorage loginsStorage = new LoginsStorage();
         AuthorizationService authService = new AuthorizationService();
         GeneralService generalService = new GeneralService();
-        GeneralTools generalTools = new GeneralTools();
-
-        File[] allFiles = libraryDirectory.listFiles();
-
-        loginsStorage.createFolder();
 
         instructionsText.printGreetingsMessage();
 

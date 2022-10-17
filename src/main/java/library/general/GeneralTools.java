@@ -7,7 +7,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+
+import static library.dataBase.LoginsStorage.*;
 
 public class GeneralTools {
 
@@ -104,5 +108,19 @@ public class GeneralTools {
         List<String> upperAnswers = getListWithUpperCase(answers);
         String stringWithAnswers = upperAnswers.toString();
         return stringWithAnswers.contains(search.toUpperCase());
+    }
+
+    public void createFolder() {
+        try {
+            if (!loginsDirectory.exists()) {
+                Files.createDirectories(Paths.get(pathLoginsDirectory));
+            }
+            if (!loginsFile.exists()) {
+                Files.createFile(Paths.get(pathLoginsFile));
+            }
+        } catch (IOException folderException) {
+            ErrorMessages exceptionsMessages = new ErrorMessages();
+            exceptionsMessages.printNotCreateFolderExceptionMessage();
+        }
     }
 }

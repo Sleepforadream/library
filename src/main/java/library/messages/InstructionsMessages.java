@@ -108,6 +108,15 @@ public class InstructionsMessages {
         System.out.println();
         System.out.println("Хотите зайти в аккаунт?(Y/N)");
     }
+
+    public String getChoosePressWantOpenMessage() {
+        return "Выберите произведение которое желаете открыть. Для этого введите его порядковый номер";
+    }
+
+    public void printChoosePressWantOpenMessage() {
+        System.out.println();
+        System.out.println("Выберите произведение которое желаете открыть. Для этого введите его порядковый номер");
+    }
 }
 
 
