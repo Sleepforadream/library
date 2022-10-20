@@ -92,12 +92,12 @@ public class InstructionsMessages {
     }
 
     public String getWantRegisterAccountMessage() {
-        return "Хотите зарегистрировать аккаунт?(Y/N)";
+        return "Хотите зарегистрировать новый аккаунт?(Y/N)";
     }
 
     public void printWantRegisterAccountMessage() {
         System.out.println();
-        System.out.println("Хотите зарегистрировать аккаунт?(Y/N)");
+        System.out.println("Хотите зарегистрировать новый аккаунт?(Y/N)");
     }
 
     public String getWantLoginAccountMessage() {

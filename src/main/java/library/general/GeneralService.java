@@ -18,15 +18,10 @@ import static library.entities.PressParameters.*;
 public class GeneralService implements GeneralInterface {
 
     InstructionsMessages instructionsMessages = new InstructionsMessages();
-
     ActionMessages actionMessages = new ActionMessages();
-
     ErrorMessages errorMessages = new ErrorMessages();
-
     GeneralTools generalTools = new GeneralTools();
-
     ArrayList<Press> allPress = getListAllPress();
-
     Scanner sc = new Scanner(System.in);
 
     public ArrayList<Press> getListAllPress() {
@@ -37,81 +32,17 @@ public class GeneralService implements GeneralInterface {
             System.exit(1);
         }
         for (int i = 0; i < Objects.requireNonNull(allFiles).length; i++) {
-            String name = getTitleByFileName(allFiles[i].getAbsolutePath());
-            String author = getAuthorByFileName(allFiles[i].toString());
-            String dateOfCreate = getDateOfCreate(allFiles[i].toString());
-            String type = getTypeOfProduct(allFiles[i].toString());
-            String genre = getGenreOfProduct(allFiles[i].toString());
-            int length = generalTools.getLengthCharsInFile(allFiles[i].toString());
-            Press press = new Press(name, author, dateOfCreate, type, genre, length);
+            String name = getTitleByFileName(String.valueOf(allFiles[i]));
+            String author = getAuthorByFileName(String.valueOf(allFiles[i]));
+            String dateOfCreate = getDateOfCreate(String.valueOf(allFiles[i]));
+            String type = getTypeOfProduct(String.valueOf(allFiles[i]));
+            String genre = getGenreOfProduct(String.valueOf(allFiles[i]));
+            String absolutePath = String.valueOf(allFiles[i]);
+            int length = generalTools.getLengthCharsInFile(String.valueOf(allFiles[i]));
+            Press press = new Press(name, author, dateOfCreate, type, genre, length, absolutePath);
             presses.add(press);
         }
         return presses;
-    }
-
-    public ArrayList<String> getListActions() {
-        ArrayList<String> actions = new ArrayList<>();
-        actions.add(actionMessages.getToSearchOnByAuthorOrNameMessage());
-        actions.add(actionMessages.getToViewAllLibraryMessage());
-        actions.add(actionMessages.getToViewAllBooksMessage());
-        actions.add(actionMessages.getToViewAllMagazinesMessage());
-        actions.add(actionMessages.getToExitMessage());
-        return actions;
-    }
-
-    public void getListActionsByNumbers() {
-        ArrayList<String> actions = getListActions();
-        for (int i = 0; i < actions.size(); i++) {
-            System.out.println((i + 1) + ". " + actions.get(i));
-        }
-    }
-
-    public boolean validateEnterActions(String answer) {
-        List<String> rightSymbols = Arrays.asList("F", "E", "B", "M", "X");
-        return rightSymbols.contains(answer.toUpperCase());
-    }
-
-    public String getAnswerForAction() {
-        String answer = sc.nextLine();
-        if (validateEnterActions(answer)) {
-            return answer;
-        } else {
-            errorMessages.printNotCorrectAnswerMessage();
-            return getAnswerForAction();
-        }
-    }
-
-    public void choiceAction() {
-        String answer = getAnswerForAction();
-        if (answer.equalsIgnoreCase("f")) {
-            searchPressByParameter();
-        } else if (answer.equalsIgnoreCase("e")) {
-            viewAllPress();
-        } else if (answer.equalsIgnoreCase("b")) {
-            viewAllBooks();
-        } else if (answer.equalsIgnoreCase("m")) {
-            viewAllMagazines();
-        } else if (answer.equalsIgnoreCase("x")) {
-            exit();
-        }
-    }
-
-    public ArrayList<Press> searchPressByParameter() {
-        instructionsMessages.printEnterTitleOfSearchMessage();
-        String answer = sc.nextLine();
-        ArrayList<Press> findBooks = new ArrayList<>();
-        for (Press press : allPress) {
-            if (generalTools.findInList(press, answer)) {
-                findBooks.add(press);
-            }
-        }
-        if (!findBooks.isEmpty()) {
-            generalTools.printListWithNumbers(findBooks);
-            return findBooks;
-        } else {
-            errorMessages.printNotFoundInLibraryMessage();
-            return searchPressByParameter();
-        }
     }
 
     public void viewAllPress() {
@@ -123,24 +54,17 @@ public class GeneralService implements GeneralInterface {
         generalTools.printListWithNumbers(books);
     }
 
+    public ArrayList<Press> getAllBooks() {
+        return generalTools.getListByType("книга", allPress);
+    }
+
     public void viewAllMagazines() {
         ArrayList<Press> magazines = generalTools.getListByType("журнал", allPress);
         generalTools.printListWithNumbers(magazines);
     }
 
-    public void openFileByNumberInList(ArrayList<Press> allBooks) {
-        instructionsMessages.printChoosePressWantOpenMessage();
-        if (sc.hasNextInt()) {
-            int number = sc.nextInt();
-            Press name = allBooks.get(number - 1);
-            File file = new File(String.valueOf(name));
-            Desktop desktop = Desktop.getDesktop();
-            try {
-                desktop.open(file);
-            } catch (IOException errorReadException) {
-                errorMessages.printNotOpenPressMessage();
-            }
-        }
+    public ArrayList<Press> getAllMagazines() {
+        return generalTools.getListByType("журнал", allPress);
     }
 
     public String getTitleByFileName(String fileName) {
@@ -175,29 +99,125 @@ public class GeneralService implements GeneralInterface {
         return generalTools.getNextWordAfterTextInFile(fileName, "Жанр:");
     }
 
-    public void sortList(ArrayList<Press> allBooks) {
-        actionMessages.getToSortByTitle();
-        actionMessages.getToSortByAuthor();
-        actionMessages.getToSortByDate();
-        actionMessages.getToSortByType();
-        actionMessages.getToSortByGenre();
-        actionMessages.getToSortByLength();
+    public ArrayList<String> getListActions() {
+        ArrayList<String> actions = new ArrayList<>();
+        actions.add(actionMessages.getToSearchOnByAuthorOrNameMessage());
+        actions.add(actionMessages.getToViewAllLibraryMessage());
+        actions.add(actionMessages.getToViewAllBooksMessage());
+        actions.add(actionMessages.getToViewAllMagazinesMessage());
+        actions.add(actionMessages.getToExitMessage());
+        return actions;
+    }
+
+    public void printListActionsByNumbers() {
+        generalTools.printListByNumbers(getListActions());
+    }
+
+    public List<String> enterActionsKeys() {
+        return Arrays.asList("F", "E", "B", "M", "X");
+    }
+
+    public ArrayList<Press> choiceAction() {
         String answer = sc.nextLine();
-        if (answer.equalsIgnoreCase("L")) {
-            sortByLength(allBooks);
-        } else if (answer.equalsIgnoreCase("A")) {
-            sortByAuthor(allBooks);
-        } else if (answer.equalsIgnoreCase("N")) {
-            sortByName(allBooks);
-        } else if (answer.equalsIgnoreCase("D")) {
-            sortByDate(allBooks);
-        } else if (answer.equalsIgnoreCase("T")) {
-            sortByType(allBooks);
-        } else if (answer.equalsIgnoreCase("G")) {
-            sortByGenre(allBooks);
+        if (answer.equalsIgnoreCase(enterActionsKeys().get(0))) {
+            return searchPressByParameter();
+        } else if (answer.equalsIgnoreCase(enterActionsKeys().get(1))) {
+            viewAllPress();
+            return getListAllPress();
+        } else if (answer.equalsIgnoreCase(enterActionsKeys().get(2))) {
+            viewAllBooks();
+            return getAllBooks();
+        } else if (answer.equalsIgnoreCase(enterActionsKeys().get(3))) {
+            viewAllMagazines();
+            return getAllMagazines();
+        } else if (answer.equalsIgnoreCase(enterActionsKeys().get(4))) {
+            return null;
+        }
+        return null;
+    }
+
+    public ArrayList<Press> getPressListChooseAction() {
+        printListActionsByNumbers();
+        return choiceAction();
+    }
+
+    public ArrayList<Press> searchPressByParameter() {
+        String answer = sc.nextLine();
+        instructionsMessages.printEnterTitleOfSearchMessage();
+        ArrayList<Press> findBooks = new ArrayList<>();
+        for (Press press : allPress) {
+            if (generalTools.findInList(press, answer)) {
+                findBooks.add(press);
+            }
+        }
+        if (!findBooks.isEmpty()) {
+            generalTools.printListWithNumbers(findBooks);
+            return findBooks;
         } else {
-            errorMessages.printNotCorrectAnswerMessage();
-            sortList(allBooks);
+            errorMessages.printNotFoundInLibraryMessage();
+            return searchPressByParameter();
+        }
+    }
+
+    public void openFileByNumberInList(ArrayList<Press> allBooks, Integer answer) {
+        if (answer > allBooks.size()) {
+            errorMessages.printNoThisNumberInListMessage();
+        } else {
+            Press press = allBooks.get(answer - 1);
+            String name = press.getAbsolutePath();
+            File file = new File(name);
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.open(file);
+            } catch (IOException errorReadException) {
+                errorMessages.printNotOpenPressMessage();
+            }
+        }
+    }
+
+    public ArrayList<String> getListSort() {
+        ArrayList<String> sorts = new ArrayList<>();
+        sorts.add(actionMessages.getToSortByTitle());
+        sorts.add(actionMessages.getToSortByAuthor());
+        sorts.add(actionMessages.getToSortByDate());
+        sorts.add(actionMessages.getToSortByType());
+        sorts.add(actionMessages.getToSortByGenre());
+        sorts.add(actionMessages.getToSortByLength());
+        return sorts;
+    }
+
+    public void printListSorts() {
+        List<String> list = getListSort();
+        for (String s : list) {
+            System.out.println(s);
+        }
+    }
+
+    public List<String> enterSortsKeys() {
+        return Arrays.asList("L", "A", "N", "D", "T", "G");
+    }
+
+    public ArrayList<Press> choiceSortAction(ArrayList<Press> listPress, String answer) {
+        if (answer.equalsIgnoreCase(enterSortsKeys().get(0))) {
+            sortByLength(listPress);
+            return listPress;
+        } else if (answer.equalsIgnoreCase(enterSortsKeys().get(1))) {
+            sortByAuthor(listPress);
+            return listPress;
+        } else if (answer.equalsIgnoreCase(enterSortsKeys().get(2))) {
+            sortByName(listPress);
+            return listPress;
+        } else if (answer.equalsIgnoreCase(enterSortsKeys().get(3))) {
+            sortByDate(listPress);
+            return listPress;
+        } else if (answer.equalsIgnoreCase(enterSortsKeys().get(4))) {
+            sortByType(listPress);
+            return listPress;
+        } else if (answer.equalsIgnoreCase(enterSortsKeys().get(5))) {
+            sortByGenre(listPress);
+            return listPress;
+        } else {
+            return null;
         }
     }
 
@@ -226,20 +246,9 @@ public class GeneralService implements GeneralInterface {
         }
     };
 
-    public void printListByNumbers(ArrayList<Press> list) {
-        int count = 0;
-        for (Press listBook : list) {
-            count++;
-            String bookWithNumber = (count + "." + " " + listBook.toString());
-            System.out.println(bookWithNumber);
-        }
-    }
-
     public void sortByValue(ArrayList<Press> pressList, Comparator<Press> comparator) {
         pressList.sort(comparator);
-        printListByNumbers(pressList);
-        openFileByNumberInList(pressList);
-        sortList(pressList);
+        generalTools.printListWithNumbers(pressList);
     }
 
     public void sortByAuthor(ArrayList<Press> pressList) {
@@ -278,20 +287,53 @@ public class GeneralService implements GeneralInterface {
             } else if (parameter == genre) {
                 parameterPrint = parameter.toString(parameter) + " - " + pressList.get(i).getGenre() + ":";
             } else if (parameter == dateOfCreate) {
-                parameterPrint = getYearCreationOfBook(String.valueOf(pressList.get(i))) + " год:";
+                parameterPrint = getYearCreationOfBook(pressList.get(i).getAbsolutePath()) + " год:";
             } else {
                 errorMessages.printNotCorrectAnswerMessage();
             }
             if (!parameterPrint.equals(defaultString)) {
                 System.out.println(parameterPrint);
             }
-            System.out.println((i++) + "." + " " + pressList.get(i).toString());
+            System.out.println((i + 1) + "." + " " + pressList.get(i).toString());
             defaultString = parameterPrint;
         }
+    }
+
+    public ArrayList<Press> actionsWithList(ArrayList<Press> press) {
+        instructionsMessages.printChoosePressWantOpenMessage();
+        System.out.println();
+        printListSorts();
+        actionMessages.printToReturnInMainMenu();
+        String answer = sc.nextLine();
+        if (generalTools.validateEnter(answer, enterSortsKeys())) {
+            return choiceSortAction(press, answer);
+        } else if (answer.matches("\\d+")) {
+            openFileByNumberInList(press, (Integer.valueOf(answer)));
+            generalTools.printListWithNumbers(press);
+            return press;
+        } else if (answer.equalsIgnoreCase("q")) {
+            ArrayList<Press> q = new ArrayList<>();
+            Press back = new Press("q","q","q","q","q",0,"q");
+            q.add(back);
+            return q;
+        }
+        return null;
     }
 
     public void exit() {
         System.out.println("До свидания!");
         System.exit(0);
+    }
+
+    public boolean runLibrary() {
+        ArrayList<Press> pressFromAction = getPressListChooseAction();
+        while (pressFromAction != null) {
+            pressFromAction = actionsWithList(pressFromAction);
+            if (Objects.equals(pressFromAction.get(0).getTitle(), "q")) {
+                return runLibrary();
+            }
+        }
+        exit();
+        return false;
     }
 }

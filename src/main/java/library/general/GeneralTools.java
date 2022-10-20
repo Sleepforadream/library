@@ -17,26 +17,9 @@ public class GeneralTools {
 
     ErrorMessages errorMessages = new ErrorMessages();
 
-    public ArrayList<String> fileSearch(File directory, String search) {
-        File[] listBooks = Objects.requireNonNull(directory.listFiles());
-        ArrayList<String> findBooks = new ArrayList<>();
-        for (File listBook : listBooks) {
-            String[] name = listBook.toString().split("\\\\");
-            if (name[name.length - 1].toLowerCase().contains(search.toLowerCase())) {
-                String bookName = name[name.length - 1];
-                findBooks.add(bookName);
-            }
-        }
-        if (findBooks.isEmpty()) {
-            errorMessages.getNotFoundInLibraryMessage();
-            return null;
-        }
-        return findBooks;
-    }
-
     public List<String> getListWithUpperCase(List<String> list) {
         List<String> uppers = new ArrayList<>();
-        for (String string : list){
+        for (String string : list) {
             String upper = string.toUpperCase();
             uppers.add(upper);
         }
@@ -47,15 +30,15 @@ public class GeneralTools {
         int count = 0;
         for (Press listBook : list) {
             count++;
-            String bookWithNumber = (count + "." + " " + listBook.toString());
+            String bookWithNumber = (count + "." + " " + listBook);
             System.out.println(bookWithNumber);
         }
     }
 
-    public ArrayList<Press> getListByType(String type,ArrayList<Press> allPress) {
+    public ArrayList<Press> getListByType(String type, ArrayList<Press> allPress) {
         ArrayList<Press> allBooks = new ArrayList<>();
         for (Press press : allPress) {
-            if(press.getType().equalsIgnoreCase(type)){
+            if (press.getType().equalsIgnoreCase(type)) {
                 allBooks.add(press);
             }
         }
@@ -97,7 +80,7 @@ public class GeneralTools {
         return "";
     }
 
-    public String getPartOfStringAfterTextByRegex(String fileName,String after, String regex, int index) {
+    public String getPartOfStringAfterTextByRegex(String fileName, String after, String regex, int index) {
         String dateOfCreation = getNextWordAfterTextInFile(fileName, after);
         String[] numbersInDate = dateOfCreation.split(regex);
         return numbersInDate[index];
@@ -122,5 +105,15 @@ public class GeneralTools {
             ErrorMessages exceptionsMessages = new ErrorMessages();
             exceptionsMessages.printNotCreateFolderExceptionMessage();
         }
+    }
+
+    public void printListByNumbers(ArrayList<String> list) {
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println((i + 1) + ". " + list.get(i));
+        }
+    }
+
+    public boolean validateEnter(String answer, List<String> rightSymbols) {
+        return rightSymbols.contains(answer.toUpperCase());
     }
 }

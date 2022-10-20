@@ -8,6 +8,7 @@ public class Press {
     String type;
     String genre;
     Integer length;
+    String absolutePath;
 
     public String getTitle() {
         return title;
@@ -33,17 +34,22 @@ public class Press {
         return Integer.parseInt(String.valueOf(length));
     }
 
+    public String getAbsolutePath() {
+        return absolutePath;
+    }
+
     @Override
     public String toString() {
         return author + '_' + title;
     }
 
-    public Press(String title, String author, String dateOfCreate, String type, String genre, Integer length) {
+    public Press(String title, String author, String dateOfCreate, String type, String genre, Integer length, String absolutePath) {
         this.title = title;
         this.author = author;
         this.dateOfCreate = dateOfCreate;
         this.type = type;
         this.genre = genre;
         this.length = length;
+        this.absolutePath = absolutePath;
     }
 }

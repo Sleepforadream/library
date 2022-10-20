@@ -35,11 +35,11 @@ public class ActionMessages {
     }
 
     public String getToExitMessage() {
-        return "Чтобы выйти введите - X";
+        return "Чтобы выйти введите - 'X'";
     }
 
     public void printToExitMessage() {
-        System.out.println("Чтобы выйти введите - X");
+        System.out.println("Чтобы выйти введите - 'X'");
     }
 
     public String getToSortByLength() {
@@ -96,23 +96,12 @@ public class ActionMessages {
         System.out.println("Для сортировки по жанру введите - 'G'");
     }
 
+    public String getToReturnInMainMenu() {
+        return "Для выхода назад - в главное меню введите - 'Q'";
+    }
 
-        /*System.out.println("1. Поиск книги или журнала по автору или названию");
-        System.out.println("2. Показать всю библиотеку");
-        System.out.println("3. Показать все книги");
-        System.out.println("4. Показать все журналы");
-        System.out.println("5. Выйти");*/
-
-        /*System.out.println();
-        System.out.println("Для сортировки по длине произведения введите - 'L'");
+    public void printToReturnInMainMenu() {
         System.out.println();
-        System.out.println("Для сортировки по фамилии автора введите - 'A'");
-        System.out.println();
-        System.out.println("Для сортировки по названию произведения введите - 'N'");
-        System.out.println();
-        System.out.println("Для сортировки по дате издания произведения введите - 'D'");
-        System.out.println();
-        System.out.println("Для сортировки по типу введите - 'T'");
-        System.out.println();
-        System.out.println("Для сортировки по жанру введите - 'G'");*/
+        System.out.println("Для выхода назад - в главное меню введите - 'Q'");
+    }
 }

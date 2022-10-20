@@ -6,7 +6,8 @@ public enum PressParameters {
     dateOfCreate,
     type,
     genre,
-    length;
+    length,
+    absolutePath;
 
     public String toString(PressParameters pressParameter) {
         if (pressParameter == title) {
@@ -21,6 +22,8 @@ public enum PressParameters {
             return "Жанр";
         } else if (pressParameter == length) {
             return "Длина";
+        } else if (pressParameter == absolutePath) {
+            return "Путь к файлу";
         } else {
             return "";
         }

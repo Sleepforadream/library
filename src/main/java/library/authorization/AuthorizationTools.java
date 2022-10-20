@@ -37,8 +37,7 @@ public class AuthorizationTools {
         ArrayList<String> logins = getAccountList();
         int loginIndex = logins.indexOf(login);
         ArrayList<String> passwords = getPasswordList();
-        int passwordIndex = passwords.indexOf(password);
-        return loginIndex == passwordIndex;
+        return Objects.equals(passwords.get(loginIndex), password);
     }
 
     public boolean validateLogin(String login) {

@@ -18,82 +18,6 @@ public class AuthorizationService implements AuthorizationInterface {
 
     Scanner sc = new Scanner(System.in);
 
-    @Override
-    public boolean logInUser() {
-        instructionsMessages.printEnterLoginMessage();
-        String login = sc.nextLine();
-        if (authTools.checkForAnLogin(login)) {
-            return checkPasswordUser(login);
-        } else {
-            errorMessages.printNotRegisteredAccountMessage();
-            instructionsMessages.printWantRegisterAccountMessage();
-            if (getAnswerYesOrNot()) {
-                return registerUser();
-            }
-            else {
-                return logInUser();
-            }
-        }
-    }
-
-    public boolean checkPasswordUser(String login) {
-        instructionsMessages.printEnterPasswordMessage();
-        String password = sc.nextLine();
-        if (authTools.checkIfTheAccountMatchesThePassword(login, password)) {
-            instructionsMessages.printSuccessEnterInAccountMessage();
-            return true;
-        } else {
-            errorMessages.printNotRightEnterYourPasswordMessage();
-            return checkPasswordUser(login);
-        }
-    }
-
-    public boolean registerUser() {
-        String login = createLogin();
-        String password = createPassword();
-        if (authTools.writeLoginAndPasswordInFile(login, password)) {
-            instructionsMessages.printSuccessCreateAccountMessage();
-            return true;
-        } else {
-            errorMessages.printNotSuccessCreateAccountMessage();
-            return false;
-        }
-    }
-
-    public String createLogin() {
-        instructionsMessages.printEnterEmailMessage();
-        String login = sc.nextLine();
-        if (!authTools.checkForAnLogin(login)) {
-            if (authTools.validateLogin(login)) {
-                return login;
-            } else {
-                errorMessages.printNotCorrectEmailMessage();
-                return createLogin();
-            }
-        } else {
-            errorMessages.printThisAccountAlreadyExistMessage();
-            instructionsMessages.printWantLoginAccountMessage();
-            if (getAnswerYesOrNot()){
-                logInUser();
-                return errorMessages.getNotSuccessCreateAccountMessage();
-            }
-            else {
-                return createLogin();
-            }
-        }
-    }
-
-    public String createPassword() {
-        instructionsMessages.printCreateYourPasswordMessage();
-        String password = sc.nextLine();
-        if (authTools.validatePassword(password)) {
-            return password;
-        } else {
-            errorMessages.printNotCorrectPasswordMessage();
-            return createPassword();
-        }
-    }
-
     public boolean getAnswerYesOrNot() {
         String answer = sc.nextLine();
         List<String> yes = Arrays.asList("Y", "ДА", "YES");
@@ -108,12 +32,112 @@ public class AuthorizationService implements AuthorizationInterface {
         }
     }
 
-    public void choiceLoginOrRegister () {
-        if (getAnswerYesOrNot()) {
-            logInUser();
+    public String getAnswerString() {
+        return sc.nextLine();
+    }
+
+    @Override
+    public boolean loginUser() {
+        String login = enterLogin();
+        if (login != null) {
+            String password = enterPassword();
+            if (authTools.checkIfTheAccountMatchesThePassword(login, password)) {
+                instructionsMessages.printSuccessEnterInAccountMessage();
+                return true;
+            } else {
+                errorMessages.printNotRightEnterYourPasswordMessage();
+                if (wantRegister()) {
+                    registerUser();
+                } else {
+                    loginUser();
+                }
+                return false;
+            }
+        } else {
+            return false;
         }
-        else {
-            registerUser();
+    }
+
+    public String enterLogin() {
+        instructionsMessages.printEnterLoginMessage();
+        String login = getAnswerString();
+        if (authTools.checkForAnLogin(login)) {
+            return login;
+        } else {
+            errorMessages.printNotRegisteredAccountMessage();
+            if (!wantRegister()) {
+                return enterLogin();
+            } else {
+                registerUser();
+                return null;
+            }
+        }
+    }
+
+    public String enterPassword() {
+        instructionsMessages.printEnterPasswordMessage();
+        return getAnswerString();
+    }
+
+
+    public boolean wantRegister() {
+        instructionsMessages.printWantRegisterAccountMessage();
+        return getAnswerYesOrNot();
+    }
+
+    public boolean wantLogin() {
+        instructionsMessages.printWantLoginAccountMessage();
+        return getAnswerYesOrNot();
+    }
+
+    @Override
+    public boolean registerUser() {
+        String login = createLogin();
+        if (login != null) {
+            String password = createPassword();
+            if (authTools.writeLoginAndPasswordInFile(login, password)) {
+                instructionsMessages.printSuccessCreateAccountMessage();
+                loginUser();
+                return true;
+            } else {
+                errorMessages.printNotSuccessCreateAccountMessage();
+                wantLogin();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public String createLogin() {
+        instructionsMessages.printEnterEmailMessage();
+        String login = getAnswerString();
+        if (authTools.validateLogin(login)) {
+            if (!authTools.checkForAnLogin(login)) {
+                return login;
+            } else {
+                errorMessages.printThisAccountAlreadyExistMessage();
+                if (wantLogin()) {
+                    loginUser();
+                    return null;
+                } else {
+                    return createLogin();
+                }
+            }
+        } else {
+            errorMessages.printNotCorrectEmailMessage();
+            return createLogin();
+        }
+    }
+
+    public String createPassword() {
+        instructionsMessages.printCreateYourPasswordMessage();
+        String password = getAnswerString();
+        if (authTools.validatePassword(password)) {
+            return password;
+        } else {
+            errorMessages.printNotCorrectPasswordMessage();
+            return createPassword();
         }
     }
 }

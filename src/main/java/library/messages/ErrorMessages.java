@@ -133,10 +133,18 @@ public class ErrorMessages {
     }
 
     public String getNotFoundBooksOrMagazineMessage() {
-        return "Не удалось найти книги или журналы библиотеки";
+        return "Не удалось найти книги или журналы библиотеки. Проверьте наличие файлов в папке для хранения прессы";
     }
 
     public void printNotFoundBooksOrMagazineMessage() {
         System.err.println("Не удалось найти книги или журналы библиотеки. Проверьте наличие файлов в папке для хранения прессы");
+    }
+
+    public String getNoThisNumberInListMessage() {
+        return "Такого номера нет в списке";
+    }
+
+    public void printNoThisNumberInListMessage() {
+        System.err.println("Такого номера нет в списке");
     }
 }
