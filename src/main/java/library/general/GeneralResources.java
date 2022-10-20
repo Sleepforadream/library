@@ -1,7 +1,6 @@
 package library.general;
 
 import library.entities.Press;
-import library.messages.ErrorMessages;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,10 +11,10 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static library.dataBase.LoginsStorage.*;
+import static library.messages.ErrorMessages.getNotGetAccessToFileMessage;
+import static library.messages.ErrorMessages.printNotCreateFolderExceptionMessage;
 
-public class GeneralTools {
-
-    ErrorMessages errorMessages = new ErrorMessages();
+public class GeneralResources {
 
     public List<String> getListWithUpperCase(List<String> list) {
         List<String> uppers = new ArrayList<>();
@@ -63,7 +62,7 @@ public class GeneralTools {
             fis = new FileInputStream(file);
             return new Scanner(fis);
         } catch (FileNotFoundException e) {
-            errorMessages.getNotGetAccessToFileMessage();
+            getNotGetAccessToFileMessage();
             return null;
         }
     }
@@ -102,8 +101,7 @@ public class GeneralTools {
                 Files.createFile(Paths.get(pathLoginsFile));
             }
         } catch (IOException folderException) {
-            ErrorMessages exceptionsMessages = new ErrorMessages();
-            exceptionsMessages.printNotCreateFolderExceptionMessage();
+            printNotCreateFolderExceptionMessage();
         }
     }
 

@@ -5,7 +5,7 @@ import java.util.*;
 
 import static library.dataBase.LoginsStorage.*;
 
-public class AuthorizationTools {
+public class AuthorizationResources {
 
     public ArrayList<String> getAccountList() {
         return getWordsByIndexFromEachLineInAccountFile(0);

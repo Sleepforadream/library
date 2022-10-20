@@ -2,9 +2,6 @@ package library.general;
 
 import library.entities.Press;
 import library.entities.PressParameters;
-import library.messages.ActionMessages;
-import library.messages.ErrorMessages;
-import library.messages.InstructionsMessages;
 
 import java.awt.*;
 import java.io.File;
@@ -14,13 +11,13 @@ import java.util.List;
 
 import static library.dataBase.LibraryStorage.*;
 import static library.entities.PressParameters.*;
+import static library.messages.ActionMessages.*;
+import static library.messages.ErrorMessages.*;
+import static library.messages.InstructionsMessages.*;
 
 public class GeneralService implements GeneralInterface {
 
-    InstructionsMessages instructionsMessages = new InstructionsMessages();
-    ActionMessages actionMessages = new ActionMessages();
-    ErrorMessages errorMessages = new ErrorMessages();
-    GeneralTools generalTools = new GeneralTools();
+    GeneralResources generalResources = new GeneralResources();
     ArrayList<Press> allPress = getListAllPress();
     Scanner sc = new Scanner(System.in);
 
@@ -28,7 +25,7 @@ public class GeneralService implements GeneralInterface {
         ArrayList<Press> presses = new ArrayList<>();
         File[] allFiles = libraryDirectory.listFiles();
         if (allFiles == null) {
-            errorMessages.printNotFoundBooksOrMagazineMessage();
+            printNotFoundBooksOrMagazineMessage();
             System.exit(1);
         }
         for (int i = 0; i < Objects.requireNonNull(allFiles).length; i++) {
@@ -38,7 +35,7 @@ public class GeneralService implements GeneralInterface {
             String type = getTypeOfProduct(String.valueOf(allFiles[i]));
             String genre = getGenreOfProduct(String.valueOf(allFiles[i]));
             String absolutePath = String.valueOf(allFiles[i]);
-            int length = generalTools.getLengthCharsInFile(String.valueOf(allFiles[i]));
+            int length = generalResources.getLengthCharsInFile(String.valueOf(allFiles[i]));
             Press press = new Press(name, author, dateOfCreate, type, genre, length, absolutePath);
             presses.add(press);
         }
@@ -46,71 +43,71 @@ public class GeneralService implements GeneralInterface {
     }
 
     public void viewAllPress() {
-        generalTools.printListWithNumbers(allPress);
+        generalResources.printListWithNumbers(allPress);
     }
 
     public void viewAllBooks() {
-        ArrayList<Press> books = generalTools.getListByType("книга", allPress);
-        generalTools.printListWithNumbers(books);
+        ArrayList<Press> books = generalResources.getListByType("книга", allPress);
+        generalResources.printListWithNumbers(books);
     }
 
     public ArrayList<Press> getAllBooks() {
-        return generalTools.getListByType("книга", allPress);
+        return generalResources.getListByType("книга", allPress);
     }
 
     public void viewAllMagazines() {
-        ArrayList<Press> magazines = generalTools.getListByType("журнал", allPress);
-        generalTools.printListWithNumbers(magazines);
+        ArrayList<Press> magazines = generalResources.getListByType("журнал", allPress);
+        generalResources.printListWithNumbers(magazines);
     }
 
     public ArrayList<Press> getAllMagazines() {
-        return generalTools.getListByType("журнал", allPress);
+        return generalResources.getListByType("журнал", allPress);
     }
 
     public String getTitleByFileName(String fileName) {
-        return generalTools.getNextWordAfterTextInFile(fileName, "Название:");
+        return generalResources.getNextWordAfterTextInFile(fileName, "Название:");
     }
 
     public String getAuthorByFileName(String fileName) {
-        return generalTools.getNextWordAfterTextInFile(fileName, "Автор:");
+        return generalResources.getNextWordAfterTextInFile(fileName, "Автор:");
     }
 
     public String getYearCreationOfBook(String fileName) {
-        return generalTools.getPartOfStringAfterTextByRegex(fileName, "Дата издания:", "\\.", 2);
+        return generalResources.getPartOfStringAfterTextByRegex(fileName, "Дата издания:", "\\.", 2);
     }
 
     public String getMonthCreationOfBook(String fileName) {
-        return generalTools.getPartOfStringAfterTextByRegex(fileName, "Дата издания:", "\\.", 1);
+        return generalResources.getPartOfStringAfterTextByRegex(fileName, "Дата издания:", "\\.", 1);
     }
 
     public String getDayCreationOfBook(String fileName) {
-        return generalTools.getPartOfStringAfterTextByRegex(fileName, "Дата издания:", "\\.", 0);
+        return generalResources.getPartOfStringAfterTextByRegex(fileName, "Дата издания:", "\\.", 0);
     }
 
     public String getDateOfCreate(String fileName) {
-        return generalTools.getNextWordAfterTextInFile(fileName, "Дата издания:");
+        return generalResources.getNextWordAfterTextInFile(fileName, "Дата издания:");
     }
 
     public String getTypeOfProduct(String fileName) {
-        return generalTools.getNextWordAfterTextInFile(fileName, "Тип:");
+        return generalResources.getNextWordAfterTextInFile(fileName, "Тип:");
     }
 
     public String getGenreOfProduct(String fileName) {
-        return generalTools.getNextWordAfterTextInFile(fileName, "Жанр:");
+        return generalResources.getNextWordAfterTextInFile(fileName, "Жанр:");
     }
 
     public ArrayList<String> getListActions() {
         ArrayList<String> actions = new ArrayList<>();
-        actions.add(actionMessages.getToSearchOnByAuthorOrNameMessage());
-        actions.add(actionMessages.getToViewAllLibraryMessage());
-        actions.add(actionMessages.getToViewAllBooksMessage());
-        actions.add(actionMessages.getToViewAllMagazinesMessage());
-        actions.add(actionMessages.getToExitMessage());
+        actions.add(getToSearchOnByAuthorOrNameMessage());
+        actions.add(getToViewAllLibraryMessage());
+        actions.add(getToViewAllBooksMessage());
+        actions.add(getToViewAllMagazinesMessage());
+        actions.add(getToExitMessage());
         return actions;
     }
 
     public void printListActionsByNumbers() {
-        generalTools.printListByNumbers(getListActions());
+        generalResources.printListByNumbers(getListActions());
     }
 
     public List<String> enterActionsKeys() {
@@ -143,25 +140,25 @@ public class GeneralService implements GeneralInterface {
 
     public ArrayList<Press> searchPressByParameter() {
         String answer = sc.nextLine();
-        instructionsMessages.printEnterTitleOfSearchMessage();
+        printEnterTitleOfSearchMessage();
         ArrayList<Press> findBooks = new ArrayList<>();
         for (Press press : allPress) {
-            if (generalTools.findInList(press, answer)) {
+            if (generalResources.findInList(press, answer)) {
                 findBooks.add(press);
             }
         }
         if (!findBooks.isEmpty()) {
-            generalTools.printListWithNumbers(findBooks);
+            generalResources.printListWithNumbers(findBooks);
             return findBooks;
         } else {
-            errorMessages.printNotFoundInLibraryMessage();
+            printNotFoundInLibraryMessage();
             return searchPressByParameter();
         }
     }
 
     public void openFileByNumberInList(ArrayList<Press> allBooks, Integer answer) {
         if (answer > allBooks.size()) {
-            errorMessages.printNoThisNumberInListMessage();
+            printNoThisNumberInListMessage();
         } else {
             Press press = allBooks.get(answer - 1);
             String name = press.getAbsolutePath();
@@ -170,19 +167,19 @@ public class GeneralService implements GeneralInterface {
             try {
                 desktop.open(file);
             } catch (IOException errorReadException) {
-                errorMessages.printNotOpenPressMessage();
+                printNotOpenPressMessage();
             }
         }
     }
 
     public ArrayList<String> getListSort() {
         ArrayList<String> sorts = new ArrayList<>();
-        sorts.add(actionMessages.getToSortByTitle());
-        sorts.add(actionMessages.getToSortByAuthor());
-        sorts.add(actionMessages.getToSortByDate());
-        sorts.add(actionMessages.getToSortByType());
-        sorts.add(actionMessages.getToSortByGenre());
-        sorts.add(actionMessages.getToSortByLength());
+        sorts.add(getToSortByTitle());
+        sorts.add(getToSortByAuthor());
+        sorts.add(getToSortByDate());
+        sorts.add(getToSortByType());
+        sorts.add(getToSortByGenre());
+        sorts.add(getToSortByLength());
         return sorts;
     }
 
@@ -248,7 +245,7 @@ public class GeneralService implements GeneralInterface {
 
     public void sortByValue(ArrayList<Press> pressList, Comparator<Press> comparator) {
         pressList.sort(comparator);
-        generalTools.printListWithNumbers(pressList);
+        generalResources.printListWithNumbers(pressList);
     }
 
     public void sortByAuthor(ArrayList<Press> pressList) {
@@ -289,7 +286,7 @@ public class GeneralService implements GeneralInterface {
             } else if (parameter == dateOfCreate) {
                 parameterPrint = getYearCreationOfBook(pressList.get(i).getAbsolutePath()) + " год:";
             } else {
-                errorMessages.printNotCorrectAnswerMessage();
+                printNotCorrectAnswerMessage();
             }
             if (!parameterPrint.equals(defaultString)) {
                 System.out.println(parameterPrint);
@@ -300,16 +297,16 @@ public class GeneralService implements GeneralInterface {
     }
 
     public ArrayList<Press> actionsWithList(ArrayList<Press> press) {
-        instructionsMessages.printChoosePressWantOpenMessage();
+        printChoosePressWantOpenMessage();
         System.out.println();
         printListSorts();
-        actionMessages.printToReturnInMainMenu();
+        printToReturnInMainMenu();
         String answer = sc.nextLine();
-        if (generalTools.validateEnter(answer, enterSortsKeys())) {
+        if (generalResources.validateEnter(answer, enterSortsKeys())) {
             return choiceSortAction(press, answer);
         } else if (answer.matches("\\d+")) {
             openFileByNumberInList(press, (Integer.valueOf(answer)));
-            generalTools.printListWithNumbers(press);
+            generalResources.printListWithNumbers(press);
             return press;
         } else if (answer.equalsIgnoreCase("q")) {
             ArrayList<Press> q = new ArrayList<>();

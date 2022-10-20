@@ -1,18 +1,16 @@
 package library.authorization;
 
-import library.messages.ErrorMessages;
-import library.messages.InstructionsMessages;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import static library.messages.ErrorMessages.*;
+import static library.messages.InstructionsMessages.*;
+
 public class AuthorizationService implements AuthorizationInterface {
 
-    InstructionsMessages instructionsMessages = new InstructionsMessages();
-    ErrorMessages errorMessages = new ErrorMessages();
-    AuthorizationTools authTools = new AuthorizationTools();
+    AuthorizationResources authTools = new AuthorizationResources();
 
     ArrayList<String> allUsers = authTools.getListAllAccountsAndPasswords();
 
@@ -27,7 +25,7 @@ public class AuthorizationService implements AuthorizationInterface {
         } else if (no.contains(answer.toUpperCase())) {
             return false;
         } else {
-            errorMessages.printNotCorrectAnswerYesOrNotMessage();
+            printNotCorrectAnswerYesOrNotMessage();
             return getAnswerYesOrNot();
         }
     }
@@ -42,10 +40,10 @@ public class AuthorizationService implements AuthorizationInterface {
         if (login != null) {
             String password = enterPassword();
             if (authTools.checkIfTheAccountMatchesThePassword(login, password)) {
-                instructionsMessages.printSuccessEnterInAccountMessage();
+                printSuccessEnterInAccountMessage();
                 return true;
             } else {
-                errorMessages.printNotRightEnterYourPasswordMessage();
+                printNotRightEnterYourPasswordMessage();
                 if (wantRegister()) {
                     registerUser();
                 } else {
@@ -59,12 +57,12 @@ public class AuthorizationService implements AuthorizationInterface {
     }
 
     public String enterLogin() {
-        instructionsMessages.printEnterLoginMessage();
+        printEnterLoginMessage();
         String login = getAnswerString();
         if (authTools.checkForAnLogin(login)) {
             return login;
         } else {
-            errorMessages.printNotRegisteredAccountMessage();
+            printNotRegisteredAccountMessage();
             if (!wantRegister()) {
                 return enterLogin();
             } else {
@@ -75,18 +73,18 @@ public class AuthorizationService implements AuthorizationInterface {
     }
 
     public String enterPassword() {
-        instructionsMessages.printEnterPasswordMessage();
+        printEnterPasswordMessage();
         return getAnswerString();
     }
 
 
     public boolean wantRegister() {
-        instructionsMessages.printWantRegisterAccountMessage();
+        printWantRegisterAccountMessage();
         return getAnswerYesOrNot();
     }
 
     public boolean wantLogin() {
-        instructionsMessages.printWantLoginAccountMessage();
+        printWantLoginAccountMessage();
         return getAnswerYesOrNot();
     }
 
@@ -96,11 +94,11 @@ public class AuthorizationService implements AuthorizationInterface {
         if (login != null) {
             String password = createPassword();
             if (authTools.writeLoginAndPasswordInFile(login, password)) {
-                instructionsMessages.printSuccessCreateAccountMessage();
+                printSuccessCreateAccountMessage();
                 loginUser();
                 return true;
             } else {
-                errorMessages.printNotSuccessCreateAccountMessage();
+                printNotSuccessCreateAccountMessage();
                 wantLogin();
                 return false;
             }
@@ -110,13 +108,13 @@ public class AuthorizationService implements AuthorizationInterface {
     }
 
     public String createLogin() {
-        instructionsMessages.printEnterEmailMessage();
+        printEnterEmailMessage();
         String login = getAnswerString();
         if (authTools.validateLogin(login)) {
             if (!authTools.checkForAnLogin(login)) {
                 return login;
             } else {
-                errorMessages.printThisAccountAlreadyExistMessage();
+                printThisAccountAlreadyExistMessage();
                 if (wantLogin()) {
                     loginUser();
                     return null;
@@ -125,18 +123,18 @@ public class AuthorizationService implements AuthorizationInterface {
                 }
             }
         } else {
-            errorMessages.printNotCorrectEmailMessage();
+            printNotCorrectEmailMessage();
             return createLogin();
         }
     }
 
     public String createPassword() {
-        instructionsMessages.printCreateYourPasswordMessage();
+        printCreateYourPasswordMessage();
         String password = getAnswerString();
         if (authTools.validatePassword(password)) {
             return password;
         } else {
-            errorMessages.printNotCorrectPasswordMessage();
+            printNotCorrectPasswordMessage();
             return createPassword();
         }
     }

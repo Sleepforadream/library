@@ -2,105 +2,105 @@ package library.messages;
 
 public class ActionMessages {
 
-    public String getToSearchOnByAuthorOrNameMessage() {
+    public static String getToSearchOnByAuthorOrNameMessage() {
         return "Для поиска книги или журнала по автору или названию введите - 'F'";
     }
 
-    public void printToSearchOnByAuthorOrNameMessage() {
+    public static void printToSearchOnByAuthorOrNameMessage() {
         System.out.println("Для поиска книги или журнала по автору или названию введите - 'F'");
     }
 
-    public String getToViewAllLibraryMessage() {
+    public static String getToViewAllLibraryMessage() {
         return "Чтобы показать всю библиотеку введите - 'E'";
     }
 
-    public void printToViewAllLibraryMessage() {
+    public static void printToViewAllLibraryMessage() {
         System.out.println("Чтобы показать всю библиотеку введите - 'E'");
     }
 
-    public String getToViewAllBooksMessage() {
+    public static String getToViewAllBooksMessage() {
         return "Чтобы показать все книги введите - 'B'";
     }
 
-    public void printToViewAllBooksMessage() {
+    public static void printToViewAllBooksMessage() {
         System.out.println("Чтобы показать все книги введите - 'B'");
     }
 
-    public String getToViewAllMagazinesMessage() {
+    public static String getToViewAllMagazinesMessage() {
         return "Чтобы показать все журналы введите - 'M'";
     }
 
-    public void printToViewAllMagazinesMessage() {
+    public static void printToViewAllMagazinesMessage() {
         System.out.println("Чтобы показать все журналы введите - 'M'");
     }
 
-    public String getToExitMessage() {
+    public static String getToExitMessage() {
         return "Чтобы выйти введите - 'X'";
     }
 
-    public void printToExitMessage() {
+    public static void printToExitMessage() {
         System.out.println("Чтобы выйти введите - 'X'");
     }
 
-    public String getToSortByLength() {
+    public static String getToSortByLength() {
         return "Для сортировки по длине произведения введите - 'L'";
     }
 
-    public void printToSortByLength() {
+    public static void printToSortByLength() {
         System.out.println();
         System.out.println("Для сортировки по длине произведения введите - 'L'");
     }
 
-    public String getToSortByAuthor() {
+    public static String getToSortByAuthor() {
         return "Для сортировки по автору произведения введите - 'A'";
     }
 
-    public void printToSortByAuthor() {
+    public static void printToSortByAuthor() {
         System.out.println();
         System.out.println("Для сортировки по автору произведения введите - 'A'");
     }
 
-    public String getToSortByTitle() {
+    public static String getToSortByTitle() {
         return "Для сортировки по названию произведения введите - 'N'";
     }
 
-    public void printToSortByTitle() {
+    public static void printToSortByTitle() {
         System.out.println();
         System.out.println("Для сортировки по названию произведения введите - 'N'");
     }
 
-    public String getToSortByDate() {
+    public static String getToSortByDate() {
         return "Для сортировки по дате издания произведения введите - 'D'";
     }
 
-    public void printToSortByDate() {
+    public static void printToSortByDate() {
         System.out.println();
         System.out.println("Для сортировки по дате издания произведения введите - 'D'");
     }
 
-    public String getToSortByType() {
+    public static String getToSortByType() {
         return "Для сортировки по типу введите - 'T'";
     }
 
-    public void printToSortByType() {
+    public static void printToSortByType() {
         System.out.println();
         System.out.println("Для сортировки по типу введите - 'T'");
     }
 
-    public String getToSortByGenre() {
+    public static String getToSortByGenre() {
         return "Для сортировки по жанру введите - 'G'";
     }
 
-    public void printToSortByGenre() {
+    public static void printToSortByGenre() {
         System.out.println();
         System.out.println("Для сортировки по жанру введите - 'G'");
     }
 
-    public String getToReturnInMainMenu() {
+    public static String getToReturnInMainMenu() {
         return "Для выхода назад - в главное меню введите - 'Q'";
     }
 
-    public void printToReturnInMainMenu() {
+    public static void printToReturnInMainMenu() {
         System.out.println();
         System.out.println("Для выхода назад - в главное меню введите - 'Q'");
     }
