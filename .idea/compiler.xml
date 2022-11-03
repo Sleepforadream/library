@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="untitled" options="" />
+      <module name="untitled" options="--add-modules java.datatransfer,java.desktop" />
     </option>
   </component>
 </project>
