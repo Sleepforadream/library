@@ -3,7 +3,9 @@ package library.dataBase;
 import java.io.File;
 
 public class LibraryStorage extends UserDirectory {
-    public static String pathLibraryDirectory = "C:\\Users\\" + userDir + "\\Desktop\\Library\\LibraryStorage";
+
+    static String path = new File("").getAbsolutePath();
+    public static String pathLibraryDirectory = path + "\\src\\main\\java\\library\\dataBase\\library\\LibraryStorage";
     public static File libraryDirectory = new File(pathLibraryDirectory);
 
 }
